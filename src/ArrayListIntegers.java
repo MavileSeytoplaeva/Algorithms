@@ -1,43 +1,72 @@
-import exceptions.IndexNotNullException;
-import exceptions.StringNorFoundException;
+import java.util.*;
+import java.util.ArrayList;
 
-import java.util.Arrays;
+import static java.util.Arrays.*;
 
-public class ArrayList implements StringList{
+public class ArrayListIntegers implements StringList {
     private int size;
-    private String[] stringArray;
+    private Integer[] integerArray;
 
-    public ArrayList() {
+    public ArrayListIntegers() {
     }
 
-    public ArrayList(int size) {
-        this.stringArray = new String[size];
+    public ArrayListIntegers(int size) {
+        this.integerArray = new Integer[size];
     }
+
+    private Integer[] generateArray() {
+        Integer[] integerArray = new Integer[100000];
+        for (int i = 0; i < 100000; i++) {
+            Random random = new Random();
+            integerArray[i] = random.nextInt(1,10);
+        }
+        return integerArray;
+    }
+
+    private Integer[] arraySort(Integer[] integers) {;
+        Arrays.sort(integers);
+        return integers;
+    }
+
+    private Object[] collectionSort(Integer[] integers) {
+        Integer[] generated2 = Arrays.copyOf(integers, integers.length);
+        List<Integer> list = new ArrayList<>(List.of(generated2));
+        Collections.sort(list);
+        return list.toArray();
+    }
+
+    private Integer[] binarySort(Integer[] integers) {
+        binarySort(integers);
+        return integers;
+    }
+
 
     @Override
     public String add(String item) {
         if (item == null) {
             throw new NullPointerException();
         }
+        Integer numItem = Integer.parseInt(item);
 //        for (int i = 0; i < stringArray.length; i++) {
 //            if (stringArray[i] == null) {
 //                stringArray[i] = item;
 //                return item + i + Arrays.toString(stringArray);
 //            }
 //        }
-        stringArray[size++] = item;
+        integerArray[size++] = numItem;
         return item;
 //        throw new IndexOutOfBoundsException();
     }
 
     @Override
     public String add(int index, String item) {
+        Integer numItem = Integer.parseInt(item);
         if (index == size) {
-            stringArray[size++] = item;
+            integerArray[size++] = numItem;
             return item;
         }
-        System.arraycopy(stringArray, index, stringArray, index+1, size-index);
-        stringArray[index] = item;
+        System.arraycopy(integerArray, index, integerArray, index + 1, size - index);
+        integerArray[index] = numItem;
         size++;
 //        if (item == null) {
 //            throw new NullPointerException();
@@ -55,27 +84,26 @@ public class ArrayList implements StringList{
 //            stringArray[index] = item;
 //            return stringArray[index] + Arrays.toString(stringArray);
 //        }
-        return "";
+        return String.valueOf(numItem);
     }
 
     @Override
     public String set(int index, String item) {
-        if (item == null) {
-            throw new NullPointerException();
-        }
-        stringArray[index] = item;
-        return item + Arrays.toString(stringArray);
+        Integer numItem = Integer.parseInt(item);
+        integerArray[index] = numItem;
+        return item + Arrays.toString(integerArray);
     }
 
     @Override
     public String remove(String item) {
+        Integer numItem = Integer.parseInt(item);
         int index = indexOf(item);
 
         if (index == -1) {
             throw new NullPointerException();
         }
 
-        System.arraycopy(stringArray, index+1, stringArray, index,size-index);
+        System.arraycopy(integerArray, index + 1, integerArray, index, size - index);
         size--;
         return item;
 //        if (item == null) {
@@ -93,14 +121,13 @@ public class ArrayList implements StringList{
 
     @Override
     public String remove(int index) {
-
         if (index == -1) {
             throw new NullPointerException();
         }
 
-        System.arraycopy(stringArray, index+1, stringArray, index,size-index);
+        System.arraycopy(integerArray, index + 1, integerArray, index, size - index);
         size--;
-        return stringArray[index];
+        return String.valueOf(integerArray[index]);
 //        return item;
 //        for (int i = 0; i <= stringArray.length; i++) {
 //            if (i == index) {
@@ -114,11 +141,9 @@ public class ArrayList implements StringList{
 
     @Override
     public boolean contains(String item) {
-        if (item == null) {
-            throw new NullPointerException();
-        }
-        for (String s : stringArray) {
-            if (s.equals(item)) {
+        Integer numItem = Integer.parseInt(item);
+        for (Integer s : integerArray) {
+            if (s.equals(numItem)) {
                 return true;
             }
         }
@@ -127,8 +152,9 @@ public class ArrayList implements StringList{
 
     @Override
     public int indexOf(String item) {
-        for (int i = 0; i < stringArray.length; i++) {
-            if (stringArray[i].equals(item)) {
+        Integer numItem = Integer.parseInt(item);
+        for (int i = 0; i < integerArray.length; i++) {
+            if (integerArray[i].equals(numItem)) {
                 return i;
             }
         }
@@ -137,8 +163,9 @@ public class ArrayList implements StringList{
 
     @Override
     public int lastIndexOf(String item) {
-        for (int i = stringArray.length-1; i > 0; i--) {
-            if (stringArray[i].equals(item)) {
+        Integer numItem = Integer.parseInt(item);
+        for (int i = integerArray.length - 1; i > 0; i--) {
+            if (integerArray[i].equals(numItem)) {
                 return i;
             }
         }
@@ -147,10 +174,10 @@ public class ArrayList implements StringList{
 
     @Override
     public String get(int index) {
-        if (index > stringArray.length) {
+        if (index > integerArray.length) {
             throw new IndexOutOfBoundsException();
         }
-        return stringArray[index];
+        return String.valueOf(integerArray[index]);
     }
 
     @Override
@@ -175,6 +202,6 @@ public class ArrayList implements StringList{
 
     @Override
     public String[] toArray() {
-        return Arrays.copyOf(stringArray, size);
+        return new String[]{Arrays.toString(copyOf(integerArray, size))};
     }
 }
